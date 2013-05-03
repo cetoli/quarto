@@ -12,21 +12,6 @@ Quarto - Casa
 :Home: `Labase <http://labase.selfip.org/>`__
 :Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
 """
-class A:
-    def __init__(self):
-        self.c =2
-        class B:
-            def go(inner):
-                print (self.c)
-        self.b = B()
-    def go(self):
-        self.b.go()
-        
-
-        
-        
-a=A()
-a.go()
 class Casa:
     """Casa onde se coloca pecas"""
     def __init__(self, gui, local, name):
