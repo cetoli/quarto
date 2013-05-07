@@ -17,4 +17,5 @@ Quarto is developed in `Brython <http://www.brython.info>`_
 All Quarto functionality is alloted to the folowing pages:
 
 * Quarto model : Quarto Basic Entities :ref:`quarto_modules`
+
 * Quarto tests : Quarto Unit Tests :ref:`quarto_tests`

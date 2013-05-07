@@ -13,6 +13,7 @@ Contents:
 
    intro.rst
    modules.rst
+   tests.rst
 
 
 Indices and tables
