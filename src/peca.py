@@ -19,6 +19,10 @@ class Peca:
         self.gui, self.local, self.name = gui, local, name
         self.casa = self.local.casa
         self._estado_peca = self._estado_pode_posicionar
+        self.build(gui)
+    def build(self,gui):
+        """ Engaja o controlador do envento peca escolhida"""
+        gui['p%d'%self.name].onclick = self.escolhida
     def _estado_pode_posicionar(self):
         "a peca escolhida move para a casa da base"
         self.casa.recebe(self)
@@ -26,10 +30,14 @@ class Peca:
     def _estado_nao_pode_posicionar(self):
         "a peca escolhida fica na casa onde ja esta posicionada"
         pass
-    def escolhida(self):
+    def escolhida(self, *ev):
         "a peca escolhida move para a casa da base"
         self._estado_peca()
     def move(self, casa):
         "a peca escolhida move para esta casa"
         self.local.sai(self)
         self.local = casa
+        self.atualiza(casa)
+    def atualiza(self, casa):
+        "move peca para a casa"
+        self.gui['cell_%d'%casa.name] <= self.gui['p%d'%self.name]

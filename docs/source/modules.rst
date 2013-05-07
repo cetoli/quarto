@@ -74,7 +74,6 @@ Quarto - Core Modules
 
 .. _casa:
 
-
 .. automodule:: casa
     :members:
     :undoc-members:

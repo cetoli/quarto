@@ -20,26 +20,34 @@ from quarto import Quarto
 class TestQuarto(unittest.TestCase):
 
     def setUp(self):
-        self.app = Quarto(None)
+        class Gui(object):
+            pass
+            def __getitem__(self, x):
+                return self
+           
+        
+        self.gui = Gui()
+        self.gui.onclick = object()
+        self.app = Quarto(self.gui)
 
     def test_tabuleiro(self):
         "garante que tem casas no tabuleiro."
-        self.app.build_tabuleiro(None)
+        self.app.build_tabuleiro(self.gui)
         t = self.app.tabuleiro
         self.assertEqual(len(t.casas),16)
     def test_mao(self):
         "garante que tem pecas na mao."
-        self.app.build_mao(None)
+        self.app.build_mao(self.gui)
         m = self.app.mao1
         self.assertEqual(len(m.pecas),8)
     def test_outra_mao(self):
         "garante que tem casas na outra mao."
-        self.app.build_mao(None)
+        self.app.build_mao(self.gui)
         m = self.app.mao2
         self.assertEqual(len(m.pecas),8)
     def test_escolhe_peca(self):
         "peca sai da mao e vai para a base."
-        self.app.build_base(None)
+        self.app.build_base(self.gui)
         m = self.app.mao2
         #: a peca inicia na mao
         p = m.pecas[0]
@@ -50,7 +58,7 @@ class TestQuarto(unittest.TestCase):
         self.assertEqual(len(m.pecas),7)
     def test_nao_pode_escolher__outra_peca(self):
         "nao pode escolher outra peca, peca fica na mao."
-        self.app.build_base(None)
+        self.app.build_base(self.gui)
         #: a peca inicia na mao
         p = self.app.mao1.pecas[0]
         #: a peca escolhida vai para a casa
@@ -61,7 +69,7 @@ class TestQuarto(unittest.TestCase):
         self.assertEqual(q.local,self.app.mao1)
     def test_escolhe_casa(self):
         "peca sai da base e vai para a casa."
-        self.app.build_base(None)
+        self.app.build_base(self.gui)
         m = self.app.mao2
         t = self.app.tabuleiro
         #: a peca inicia na mao
@@ -74,7 +82,7 @@ class TestQuarto(unittest.TestCase):
         self.assertEquals(self.app.casa.peca,None)
     def test_escolhe_peca_na_casa(self):
         "peca permanece na casa quando escolhida no tabuleiro."
-        self.app.build_base(None)
+        self.app.build_base(self.gui)
         m = self.app.mao2
         t = self.app.tabuleiro
         #: a peca inicia na mao
@@ -89,7 +97,7 @@ class TestQuarto(unittest.TestCase):
         self.assertEquals(self.app.casa.peca,None)
     def test_escolhe_casa_sem_peca_selecionada(self):
         "nada acontece, nenhuma peca pode ser movida para a casa."
-        self.app.build_base(None)
+        self.app.build_base(self.gui)
         m = self.app.mao2
         t = self.app.tabuleiro
         c = t.casas[0]

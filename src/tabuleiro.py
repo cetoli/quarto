@@ -20,7 +20,8 @@ class Tabuleiro:
         self.casas = []
         self.build(gui)
     def build(self, gui):
-        self.casas = [Casa(gui, self, i) for i in range(16)]
+        " Constroi uma colecao de dezesseis casas"
+        self.casas = [Casa(gui, self, i).build() for i in range(16)]
     @property
     def casa(self):
         "retorna a casa da base"
