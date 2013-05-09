@@ -8,14 +8,17 @@ Quarto - Teste
 :Author: *Carlo E. T. Oliveira*
 :Author: *Kyle Kuo*
 :Contact: carlo@nce.ufrj.br
-:Date: 2013/04/09
+:Date: 2013/05/08
 :Status: This is a "work in progress"
-:Revision: 0.1.1
+:Revision: 0.1.2
 :Home: `Labase <http://labase.selfip.org/>`__
 :Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
 """
 import unittest
 from quarto import Quarto
+import peca
+peca.bw_a = lambda a, b: a & b
+peca.bw_na = lambda a, b: ~a & b
 
 class TestQuarto(unittest.TestCase):
 
@@ -25,7 +28,9 @@ class TestQuarto(unittest.TestCase):
             def __getitem__(self, x):
                 return self
            
-        
+            def setAttribute(self, *x):
+                self.opacity = 0.5
+       
         self.gui = Gui()
         self.gui.onclick = object()
         self.app = Quarto(self.gui)
@@ -103,6 +108,38 @@ class TestQuarto(unittest.TestCase):
         c = t.casas[0]
         c.escolhida()
         self.assertEquals(c.peca,None)
+    def test_verifica_combinacao_de_pecas(self):
+        "retorna verdadeiro se as pecas combinam."
+        self.app.build_base(self.gui)
+        m = self.app.mao2
+        p = m.pecas[0]
+        self.assertTrue(p.combina(m.pecas))
+        n = self.app.mao1
+        p = n.pecas[0]
+        nc = n.pecas[0:2]+m.pecas[6:8]
+        self.assertFalse(p.combina(nc), 'nao combina %s %s'%(
+            [i.name for i in nc], p.rodada))
+        self.assertTrue(p.combina(n.pecas))
+        self.assertTrue(p.combina([i for i in n.pecas if i.name%2]))
+        self.assertTrue(p.combina([i for i in n.pecas if not i.name%2]))
+    def test_verifica_combinacao_vencedora(self):
+        "indica nas pecas e na casa base que houve uma combinacao vencedora."
+        self.app.build_base(self.gui)
+        pecas = self.app.mao2.pecas[0:5]
+        casas = self.app.tabuleiro.casas[0:4]
+        p = pecas[-1]
+        self.assertEquals(self.app.casa.peca,None)
+        #__ = [casa.recebe(peca) for casa, peca in zip(casas,pecas)]
+        __ = [peca.escolhida() or casa.escolhida() for casa, peca in zip(casas,pecas)]
+        print(self.app.casa)
+        self.assertEquals(self.app.casa._estado_corrente,self.app.casa._casa_morta)
+        p.escolhida()
+        self.assertEquals(p.local,self.app.mao2)
+        self.assertEquals(p._estado_peca,p._estado_pode_posicionar)
+        self.assertEquals(self.gui.opacity,0.5)
+        self.assertEquals(self.app.casa.peca,None)
+        
+
 
 
 if __name__ == '__main__':

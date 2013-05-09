@@ -6,9 +6,9 @@ Quarto - Casa
 :Author: *Carlo E. T. Oliveira*
 :Author: *Kyle Kuo*
 :Contact: carlo@nce.ufrj.br
-:Date: 2013/04/02
+:Date: 2013/05/08
 :Status: This is a "work in progress"
-:Revision: 0.1.0
+:Revision: 0.1.1
 :Home: `Labase <http://labase.selfip.org/>`__
 :Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
 """
@@ -22,6 +22,7 @@ class Casa:
                 "esta casa recebe peca quando esta vazia"
                 self.peca = peca
                 self.peca.move(self)
+                self.local.recebe(peca)
                 self._estado_corrente = self._casa_cheia
             def escolhida(s, *ev):
                 "remove peca da base e poe aqui"
@@ -40,15 +41,22 @@ class Casa:
                 pass
             def entrega(s, casa):
                 "entrega a peca pedida, que sai daqui"
-                casa.recebe(self.peca)
                 self._estado_corrente = self._casa_vazia
+                casa.recebe(self.peca)
+                #print('entregou daqui',self,self._estado_corrente)
+        class CasaMorta(CasaCheia):
+            """Estado que representa a casa cheia."""
+            def entrega(s, casa):
+                "morta, nao entrega a peca pedida."
+                pass
         
         self.gui, self.local, self.name = gui, local, name
         self.peca = None
         self._estado_corrente = self._casa_vazia = CasaVazia()
         self._casa_cheia = CasaCheia()
+        self._casa_morta = CasaMorta()
     def build(self):
-        """docs here"""
+        """associa o evento de escolha para o click do mouse"""
         self.gui['cell_%d'%self.name].onclick = self.escolhida
         return self
     def escolhida(self, *ev):
@@ -64,3 +72,13 @@ class Casa:
         "a peca escolhida sai daqui"
         self.peca = None
         self._estado_corrente = self._casa_vazia
+        #print('saiu daqui',self,self._estado_corrente)
+    def morta(self):
+        "notifica a casa que ela esta morta"
+        self._estado_corrente = self._casa_morta
+        #print('venceu morta',self,self._estado_corrente)
+    def venceu(self):
+        "notifica a casa que ela e vencedora"
+        #print('venceu',self.name)
+        peca = self.gui['p%d'%self.peca.name]
+        peca.setAttribute('transform', "translate(10,550)")

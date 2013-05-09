@@ -1,19 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><!--
 
 ############################################################
-Quarto - 
+Quarto - SVG User Interface
 ############################################################
 
 :Author: *Carlo E. T. Oliveira*
 :Contact: carlo@nce.ufrj.br
-:Date: 2013/03/29
+:Date: 2013/05/08
 :Status: This is a "work in progress"
-:Revision: 0.1.0
+:Revision: 0.1.1
 :Home: `Labase <http://labase.selfip.org/>`__
 :Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
-__author__ = "Carlo E. T. Oliveira (carlo@nce.ufrj.br)"
-__version__ = "0.1"
-__date__ = "2013/03/29"
 -->
 <html>
 <head>
@@ -36,6 +33,10 @@ __date__ = "2013/03/29"
 }
 </style>
 <script type="text/javascript" src="../../lib/brython.js"></script>
+<script type="text/javascript">
+function bw_and(a,b) {return a & b}
+function bw_nand(a,b) {return ~a & b}
+</script>
 <script type="text/python" src="quarto.py">
 </script>
 <script type="text/python">

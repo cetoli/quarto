@@ -6,9 +6,9 @@ Quarto - Principal
 :Author: *Carlo E. T. Oliveira*
 :Author: *Kyle Kuo*
 :Contact: carlo@nce.ufrj.br
-:Date: 2013/04/09
+:Date: 2013/05/08
 :Status: This is a "work in progress"
-:Revision: 0.1.2
+:Revision: 0.1.3
 :Home: `Labase <http://labase.selfip.org/>`__
 :Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
 """
@@ -33,6 +33,10 @@ class Quarto:
         """Constroi os dois espacos onde as pecas se iniciam."""
         self.mao1 =Mao(gui,self,0)
         self.mao2 =Mao(gui,self,1)
+        self.pecas = [peca for peca in self.mao1.pecas+self.mao2.pecas]
+    def recebe(self, peca):
+        "notificacao inocua de recebimento da peca pela casa da base"
+        pass
 
 def main(doc):
   print('Quarto 0.1.0')
